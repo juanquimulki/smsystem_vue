@@ -4,6 +4,8 @@ import VueRouter from "vue-router";
 import Login from "../views/Login";
 import Signup from "../views/Signup";
 import Dashboard from "../views/Dashboard";
+import Suscriptions from "../views/Suscriptions";
+
 import Choferes from "../views/archivos/Choferes";
 import Vehiculos from "../views/archivos/Vehiculos";
 import Proveedores from "../views/archivos/Proveedores";
@@ -43,6 +45,12 @@ const routes = [
     path: "/dashboard",
     name: "dashboard",
     component: Dashboard,
+    meta: { opcion: 0 },
+  },
+  {
+    path: "/suscriptions",
+    name: "suscriptions",
+    component: Suscriptions,
     meta: { opcion: 0 },
   },
   {

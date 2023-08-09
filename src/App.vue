@@ -2,35 +2,31 @@
   <div>
     <b-navbar toggleable="lg" type="dark" variant="info" fixed="top">
       <b-navbar-brand href="/#/dashboard">
-        <span class="title">Subscription Management System</span>
+        <span class="main-title">Subscription Management System</span>
       </b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
-      <b-collapse id="nav-collapse" is-nav v-if="$session.exists()">
+      <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav class="ml-auto">
-          <b-nav-item-dropdown
-            class="mimenu"
-            v-for="item in menu"
-            :key="item.id"
-            :text="item.label"
-            right
-          >
-            <b-dropdown-item
-              href="#"
-              v-for="subitem in item.options"
-              :key="subitem.id"
-              ><router-link :to="subitem.link" class="opcion">{{
-                subitem.label
-              }}</router-link></b-dropdown-item
-            >
+          <b-nav-item-dropdown class="menu" text="Suscriptions" right>
+            <b-dropdown-item href="#" @click="$router.push('suscriptions')" class="option">
+              Suscriptions List
+            </b-dropdown-item>
+            <b-dropdown-item href="#" @click="logOut" class="option" v-if="$session.exists()">
+              My Suscriptions
+            </b-dropdown-item>
           </b-nav-item-dropdown>
-          <b-nav-item-dropdown class="menu" text="My Profile" right>
+          <b-nav-item-dropdown class="menu" text="My Profile" right v-if="$session.exists()">
             <b-dropdown-item disabled>{{ user }} </b-dropdown-item>
             <b-dropdown-item href="#" @click="logOut" class="option"
               ><b-icon icon="door-closed"></b-icon>&nbsp;Log out</b-dropdown-item
             >
           </b-nav-item-dropdown>
+        </b-navbar-nav>
+
+        <b-navbar-nav @click="goToLogIn()" v-if="!$session.exists()">
+          <b-nav-item href="#">Log in</b-nav-item>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
@@ -64,6 +60,9 @@ export default {
 
       this.$router.push("/");
     },
+    goToLogIn() {
+      if (this.$route.path !== "/") this.$router.push("/")
+    },
   },
 };
 </script>
@@ -72,7 +71,7 @@ export default {
 body {
   background-color: #e5e5e5 !important;
 }
-.title {
+.main-title {
   margin-left: 10px;
   font-weight: bold;
   margin-right: 20px;
