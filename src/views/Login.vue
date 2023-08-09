@@ -1,26 +1,25 @@
 <template>
-  <div class="contenido">
+  <div class="">
     <b-card class="shadow">
-      <img :src="url_logo" width="85" class="float-right" />
-      <legend>¡Hola!</legend>
+      <legend>Welcome!</legend>
       <br />
       <br />
       <b-form @submit="onSubmit">
-        <b-form-group label="Usuario:">
-          <b-form-input v-model="form.user" required></b-form-input>
+        <b-form-group label="Email:">
+          <b-form-input v-model="form.email" type="email" required></b-form-input>
         </b-form-group>
 
-        <b-form-group label="Clave:">
+        <b-form-group label="Password:">
           <b-form-input
-            v-model="form.pass"
+            v-model="form.password"
             type="password"
             required
           ></b-form-input>
         </b-form-group>
 
-        <b-row>
+        <b-row style="margin-top: 15px;">
           <b-col>
-            <span class="descripcion">Ingreso al sistema...</span>
+            <span class="options">Not a user?<br><a href="#">[Signup here]</a></span>
           </b-col>
           <b-col style="text-align: right">
             <b-overlay
@@ -31,7 +30,7 @@
               spinner-variant="primary"
               class="d-inline-block"
             >
-              <b-button type="submit" variant="primary">Entrar</b-button>
+              <b-button type="submit" variant="primary">Log In</b-button>
             </b-overlay>
           </b-col>
         </b-row>
@@ -42,21 +41,15 @@
 
 <script>
 import _axios from "../common/apiClient";
-import makeToast from "../common/toast";
 
 export default {
   name: "Login",
   data() {
     return {
-      url_logo: require("../assets/albiero.jpg"),
       form: {
-        user: "",
-        pass: "",
+        email: "",
+        password: "",
       },
-
-      dismissSecs: 3,
-      dismissCountDown: 0,
-      message: "",
 
       busy: false,
     };
@@ -65,42 +58,21 @@ export default {
     onSubmit(evt) {
       evt.preventDefault();
       this.busy = true;
-      setTimeout(this.ahora, 0);
+      this.login();
     },
-    ahora() {
-      let timeStamp = new Date().getTime();
+    login() {
       _axios
-        .get("usuario/login/" + timeStamp, { params: this.form })
+        .post("auth/login", this.form)
         .then((response) => {
-          if (response.data.success) {
             this.$session.start();
-            this.$session.set("user", this.form.user);
             this.$session.set("name", response.data.name);
+            this.$session.set("email", response.data.email);
             this.$session.set("token", response.data.token);
-            this.$session.set("menu", response.data.menu);
 
-            let opciones = [];
-            response.data.menu.forEach((element) => {
-              element.options.forEach((option) => {
-                opciones.push(parseInt(option.id));
-              });
-            });
-            this.$session.set("opciones", opciones);
-
-            //bitácora
-            _axios.post("log", { user: this.form.user, operation: "IN" });
-
-            this.$emit("setMenu");
             this.$router.push("dashboard");
-          } else {
-            if (response.data.code == 1) {
-              makeToast("El usuario no existe.", "warning");
-            } else if (response.data.code == 2) {
-              makeToast("La clave no es correcta.", "warning");
-            } else if (response.data.code == 3) {
-              makeToast("La aplicación ha expirado.", "warning");
-            }
-          }
+          this.busy = false;
+        }).catch((error) => {
+          alert(error.response.data.message);
           this.busy = false;
         });
     },
@@ -118,23 +90,8 @@ export default {
   margin: auto;
   margin-top: 20px;
 }
-.descripcion {
+.options {
   font-size: 10pt;
   color: gray;
 }
-.alert {
-  max-width: 300px;
-  margin: auto;
-}
-
-/*.slide-fade-enter-active {
-  transition: all 0.3s ease;
-}
-.slide-fade-leave-active {
-  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
-}
-.slide-fade-enter, .slide-fade-leave-to {
-  transform: translateX(10px);
-  opacity: 0;
-} */
 </style>

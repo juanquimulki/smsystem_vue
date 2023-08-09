@@ -2,7 +2,7 @@
   <div>
     <b-navbar toggleable="lg" type="dark" variant="info" fixed="top">
       <b-navbar-brand href="/#/dashboard">
-        <span style="margin-left: 10px">Mantenimiento de Flota</span>
+        <span style="margin-left: 10px">Subscription Management System</span>
       </b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
