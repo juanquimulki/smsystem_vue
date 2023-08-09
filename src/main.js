@@ -1,19 +1,37 @@
-import Vue from 'vue'
-import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
+import Vue from "vue";
+import App from "./App.vue";
+import router from "./router";
 
-// Import Bootstrap and BootstrapVue CSS files (order is important)
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
+import axios from "axios";
+import VueAxios from "vue-axios";
+Vue.use(VueAxios, axios);
+
+import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
+
+// Import Bootstrap an BootstrapVue CSS files (order is important)
+import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap-vue/dist/bootstrap-vue.css";
 
 // Make BootstrapVue available throughout your project
-Vue.use(BootstrapVue)
+Vue.use(BootstrapVue);
 // Optionally install the BootstrapVue icon components plugin
-Vue.use(IconsPlugin)
+Vue.use(IconsPlugin);
 
-import App from './App.vue'
+// const options = {
+//   styles: ["./css/print.css"],
+// };
+// import VueHtmlToPaper from "vue-html-to-paper";
+// Vue.use(VueHtmlToPaper, options);
 
-Vue.config.productionTip = false
+// import excel from "vue-excel-export";
+// Vue.use(excel);
+
+Vue.config.productionTip = false;
+
+import VueSession from "vue-session";
+Vue.use(VueSession);
 
 new Vue({
-  render: h => h(App),
-}).$mount('#app')
+  router,
+  render: (h) => h(App),
+}).$mount("#app");
