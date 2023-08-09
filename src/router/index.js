@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 
 import Login from "../views/Login";
+import Signup from "../views/Signup";
 import Dashboard from "../views/Dashboard";
 import Choferes from "../views/archivos/Choferes";
 import Vehiculos from "../views/archivos/Vehiculos";
@@ -30,6 +31,12 @@ const routes = [
     path: "/",
     name: "login",
     component: Login,
+    meta: { opcion: 0 },
+  },
+  {
+    path: "/signup",
+    name: "signup",
+    component: Signup,
     meta: { opcion: 0 },
   },
   {
@@ -176,19 +183,19 @@ const router = new VueRouter({
   routes,
 });
 
-router.beforeEach((to, from, next) => {
-  if (to.name !== "login" && !router.app.$session.exists())
-    next({ name: "login" });
-  else {
-    if (to.meta.opcion == 0) {
-      next();
-    } else {
-      let opciones = router.app.$session.get("opciones");
-      if (opciones.includes(to.meta.opcion)) {
-        next();
-      }
-    }
-  }
-});
+// router.beforeEach((to, from, next) => {
+//   if (to.name !== "login" && !router.app.$session.exists())
+//     next({ name: "login" });
+//   else {
+//     if (to.meta.opcion == 0) {
+//       next();
+//     } else {
+//       let opciones = router.app.$session.get("opciones");
+//       if (opciones.includes(to.meta.opcion)) {
+//         next();
+//       }
+//     }
+//   }
+// });
 
 export default router;

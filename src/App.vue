@@ -2,7 +2,7 @@
   <div>
     <b-navbar toggleable="lg" type="dark" variant="info" fixed="top">
       <b-navbar-brand href="/#/dashboard">
-        <span style="margin-left: 10px">Subscription Management System</span>
+        <span class="title">Subscription Management System</span>
       </b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
@@ -20,21 +20,15 @@
               href="#"
               v-for="subitem in item.options"
               :key="subitem.id"
-              ><router-link :to="subitem.link" class="miopcion">{{
+              ><router-link :to="subitem.link" class="opcion">{{
                 subitem.label
               }}</router-link></b-dropdown-item
             >
           </b-nav-item-dropdown>
-          <b-nav-item-dropdown class="mimenu" text="Sesión" right>
-            <b-dropdown-item disabled>{{ usuario }} </b-dropdown-item>
-            <b-dropdown-item href="#" class="miopcion"
-              ><router-link to="/usuarios/clave" class="miopcion"
-                >Cambiar mi Clave</router-link
-              >
-            </b-dropdown-item>
-            <b-dropdown-item href="#" @click="cerrarSesion" class="miopcion"
-              ><b-icon icon="door-closed"></b-icon>&nbsp;Cerrar
-              Sesión</b-dropdown-item
+          <b-nav-item-dropdown class="menu" text="My Profile" right>
+            <b-dropdown-item disabled>{{ user }} </b-dropdown-item>
+            <b-dropdown-item href="#" @click="logOut" class="option"
+              ><b-icon icon="door-closed"></b-icon>&nbsp;Log out</b-dropdown-item
             >
           </b-nav-item-dropdown>
         </b-navbar-nav>
@@ -48,16 +42,12 @@
 </template>
 
 <script>
-import Data from "./data/data";
-
 export default {
   name: "App",
-  mixins: [Data],
   data() {
     return {
-      endpoint: "menu",
       menu: [],
-      usuario: "",
+      user: "",
     };
   },
   created() {
@@ -65,16 +55,12 @@ export default {
   },
   methods: {
     handleSetMenu() {
-      this.menu = this.$session.get("menu");
-      this.usuario =
-        this.$session.get("name") + " (" + this.$session.get("user") + ")";
+      this.menu = [];
+      this.user =
+        this.$session.get("name");
     },
-    cerrarSesion() {
-      let user = this.$session.get("user");
+    logOut() {
       this.$session.destroy();
-
-      //bitácora
-      this.postData("log", { user: user, operation: "OUT" });
 
       this.$router.push("/");
     },
@@ -86,22 +72,27 @@ export default {
 body {
   background-color: #e5e5e5 !important;
 }
+.title {
+  margin-left: 10px;
+  font-weight: bold;
+  margin-right: 20px;
+}
 nav.navbar {
   background-color: #db0000 !important;
   box-shadow: 0 0.25rem 0.25rem rgba(0, 0, 0, 0.25),
     inset 0 -1px 5px rgba(0, 0, 0, 0.25);
 }
-li.mimenu a {
+li.menu a {
   color: white !important;
 }
-a.dropdown-item a.miopcion {
+a.dropdown-item a.option {
   color: black !important;
   text-decoration: none !important;
 }
 a.dropdown-item.disabled {
   color: gray !important;
 }
-li.miopcion a {
+li.option a {
   color: black !important;
   text-decoration: none !important;
 }

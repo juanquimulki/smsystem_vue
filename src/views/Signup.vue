@@ -1,10 +1,13 @@
 <template>
   <div class="">
     <b-card class="shadow">
-      <legend>Login</legend>
+      <legend>Signup</legend>
       <br />
       <br />
       <b-form @submit="onSubmit">
+        <b-form-group label="Name:">
+          <b-form-input v-model="form.name" type="text" required></b-form-input>
+        </b-form-group>
         <b-form-group label="Email:">
           <b-form-input v-model="form.email" type="email" required></b-form-input>
         </b-form-group>
@@ -16,10 +19,17 @@
             required
           ></b-form-input>
         </b-form-group>
+        <b-form-group label="Re type password:">
+          <b-form-input
+            v-model="form.repassword"
+            type="password"
+            required
+          ></b-form-input>
+        </b-form-group>
 
         <b-row style="margin-top: 15px;">
           <b-col>
-            <span class="options">Not a user?<br><a href="#" @click="goToSignUp()">[Sign up here]</a></span>
+            <span class="options">Already a user?<br><a href="#" @click="goToLogIn()">[Log in here]</a></span>
           </b-col>
           <b-col style="text-align: right">
             <b-overlay
@@ -30,7 +40,7 @@
               spinner-variant="primary"
               class="d-inline-block"
             >
-              <b-button type="submit" variant="primary">Log In</b-button>
+              <b-button type="submit" variant="primary">Sign Up</b-button>
             </b-overlay>
           </b-col>
         </b-row>
@@ -43,12 +53,14 @@
 import _axios from "../common/apiClient";
 
 export default {
-  name: "Login",
+  name: "Signup",
   data() {
     return {
       form: {
+        name: "",
         email: "",
         password: "",
+        repassword: "",
       },
 
       busy: false,
@@ -58,26 +70,22 @@ export default {
     onSubmit(evt) {
       evt.preventDefault();
       this.busy = true;
-      this.login();
+      this.signup();
     },
-    login() {
+    signup() {
       _axios
-        .post("auth/login", this.form)
+        .post("auth/register", this.form)
         .then((response) => {
-            this.$session.start();
-            this.$session.set("name", response.data.name);
-            this.$session.set("email", response.data.email);
-            this.$session.set("token", response.data.token);
-
-            this.$router.push("dashboard");
+            alert(response.data.message);
+            this.$router.push("/");
             this.busy = false;
         }).catch((error) => {
           alert(error.response.data.message);
           this.busy = false;
         });
     },
-    goToSignUp() {
-      this.$router.push("signup");
+    goToLogIn() {
+      this.$router.push("/");
     },
   },
 };
