@@ -42,7 +42,6 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  //console.log(to, from);
   if (to.name !== "login") {
     if (to.name === "signup") {
       if (router.app.$session.exists()) {
