@@ -9,8 +9,9 @@
       <template #cell(duration)="data">
         {{ data.item.duration }} days
       </template>
-      <template #cell(options) v-if="$session.exists()">
-        o p t i o n s
+      <template #cell(subscribe)="data" v-if="$session.exists()">
+        <b-icon v-if="!isSubscribing" class="subscribe-icon" title="Subscribe" icon="person-check-fill" variant="success" aria-hidden="true" @click="subscribe(data.item.id)"></b-icon>
+        <b-spinner v-else small variant="success" label="Spinning"></b-spinner>
       </template>
     </b-table>
 
@@ -28,14 +29,39 @@ export default {
   data() {
     return {
       busy: false,
+      isSubscribing: false,
       items: [],
       fields: ['id','name','description','price','duration'],
     };
   },
+  methods: {
+    subscribe(suscription_id) {
+      this.isSubscribing = true;
+
+      const payload = { user_id: this.$session.get("id") };
+      const config = {
+        headers:{
+          Authorization: this.$session.get("token"),
+        }
+      };
+
+      _axios
+      .post(`suscriptions/${suscription_id}/subscribe`, payload, config)
+      .then((response) => {
+        console.log("response", response);
+        alert(response.data.message);
+        this.isSubscribing = false;
+      }).catch((error) => {
+        console.log("error", error);
+        this.isSubscribing = false;
+        alert(error.response.data.message);
+      });
+    },
+  },
   mounted() {
     this.busy = true;
     if (this.$session.exists()) {
-      this.fields.push('options');
+      this.fields.push('subscribe');
     }
 
     _axios
@@ -53,7 +79,6 @@ export default {
 
 <style scoped>
 .title {
-  /*float: left;*/
   margin-right: 20px;
   margin-bottom: 20px;
 }
@@ -66,5 +91,8 @@ export default {
   margin-top: 10px;
   width: 100%;
   text-align: center;
+}
+.subscribe-icon {
+  cursor: pointer;
 }
 </style>

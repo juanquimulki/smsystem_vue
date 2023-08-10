@@ -65,15 +65,16 @@ export default {
         .post("auth/login", this.form)
         .then((response) => {
             this.$session.start();
+            this.$session.set("id", response.data.id);
             this.$session.set("name", response.data.name);
             this.$session.set("email", response.data.email);
             this.$session.set("token", response.data.token);
-
-            this.$router.push("dashboard");
+            
             this.busy = false;
+            this.$router.push("dashboard");
         }).catch((error) => {
-          alert(error.response.data.message);
           this.busy = false;
+          alert(error.response.data.message);
         });
     },
     goToSignUp() {

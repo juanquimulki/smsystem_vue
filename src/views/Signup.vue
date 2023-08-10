@@ -77,11 +77,11 @@ export default {
         .post("auth/register", this.form)
         .then((response) => {
             alert(response.data.message);
-            this.$router.push("/");
             this.busy = false;
+            this.$router.push("/");
         }).catch((error) => {
-          alert(error.response.data.message);
           this.busy = false;
+          alert(error.response.data.message);
         });
     },
     goToLogIn() {
