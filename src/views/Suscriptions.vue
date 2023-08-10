@@ -32,24 +32,24 @@ export default {
       isSubscribing: false,
       items: [],
       fields: ['id','name','description','price','duration'],
+
+      payload: { user_id: this.$session.get("id") },
+      config: {
+        headers: {
+          Authorization: this.$session.get("token"),
+        }
+      },
     };
   },
   methods: {
     subscribe(suscription_id) {
       this.isSubscribing = true;
 
-      const payload = { user_id: this.$session.get("id") };
-      const config = {
-        headers: {
-          Authorization: this.$session.get("token"),
-        }
-      };
-
       _axios
-      .post(`suscriptions/${suscription_id}/subscribe`, payload, config)
+      .post(`suscriptions/${suscription_id}/subscribe`, this.payload, this.config)
       .then((response) => {
-        alert(response.data.message);
         this.isSubscribing = false;
+        alert(response.data.message);
       }).catch((error) => {
         this.isSubscribing = false;
         alert(error.response.data.message);
