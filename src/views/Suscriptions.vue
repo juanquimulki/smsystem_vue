@@ -40,7 +40,7 @@ export default {
 
       const payload = { user_id: this.$session.get("id") };
       const config = {
-        headers:{
+        headers: {
           Authorization: this.$session.get("token"),
         }
       };
@@ -48,11 +48,9 @@ export default {
       _axios
       .post(`suscriptions/${suscription_id}/subscribe`, payload, config)
       .then((response) => {
-        console.log("response", response);
         alert(response.data.message);
         this.isSubscribing = false;
       }).catch((error) => {
-        console.log("error", error);
         this.isSubscribing = false;
         alert(error.response.data.message);
       });

@@ -13,7 +13,7 @@
             <b-dropdown-item href="#" @click="$router.push('suscriptions')" class="option">
               Suscriptions List
             </b-dropdown-item>
-            <b-dropdown-item href="#" @click="logOut" class="option" v-if="$session.exists()">
+            <b-dropdown-item href="#" @click="$router.push('mysuscriptions')" class="option" v-if="$session.exists()">
               My Suscriptions
             </b-dropdown-item>
           </b-nav-item-dropdown>

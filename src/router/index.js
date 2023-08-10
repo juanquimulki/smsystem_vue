@@ -5,6 +5,7 @@ import Login from "../views/Login";
 import Signup from "../views/Signup";
 import Dashboard from "../views/Dashboard";
 import Suscriptions from "../views/Suscriptions";
+import MySuscriptions from "../views/MySuscriptions";
 
 Vue.use(VueRouter);
 
@@ -31,6 +32,12 @@ const routes = [
     path: "/suscriptions",
     name: "suscriptions",
     component: Suscriptions,
+    meta: { opcion: 0 },
+  },
+  {
+    path: "/mysuscriptions",
+    name: "mysuscriptions",
+    component: MySuscriptions,
     meta: { opcion: 0 },
   },
 ];
