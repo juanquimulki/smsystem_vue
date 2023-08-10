@@ -14,9 +14,9 @@
       </template>
       <template #cell(options)="data">
         <div v-if="!isLoading" >
-          <b-icon class="option-icon" title="Active Suscription" icon="play-circle-fill" variant="success" aria-hidden="true" @click="changeStatus(data.item.id, 'ACTIVE')"></b-icon>
-          <b-icon class="option-icon" title="Pause Suscription" icon="pause-circle-fill" variant="warning" aria-hidden="true" @click="changeStatus(data.item.id, 'PAUSED')"></b-icon>
-          <b-icon class="option-icon" title="Cancel Suscription" icon="stop-circle-fill" variant="danger" aria-hidden="true" @click="changeStatus(data.item.id, 'CANCELLED')"></b-icon>
+          <b-icon class="option-icon" v-if="data.item.status !== 'ACTIVE'" title="Active Suscription" icon="play-circle-fill" variant="success" aria-hidden="true" @click="changeStatus(data.item.id, 'ACTIVE')"></b-icon>
+          <b-icon class="option-icon" v-if="data.item.status !== 'PAUSED'" title="Pause Suscription" icon="pause-circle-fill" variant="warning" aria-hidden="true" @click="changeStatus(data.item.id, 'PAUSED')"></b-icon>
+          <b-icon class="option-icon" v-if="data.item.status !== 'CANCELLED'" title="Cancel Suscription" icon="stop-circle-fill" variant="danger" aria-hidden="true" @click="changeStatus(data.item.id, 'CANCELLED')"></b-icon>
           <b-icon class="option-icon" title="Unsubscribe" icon="trash-fill" variant="secondary" aria-hidden="true" @click="unsubscribe(data.item.id)"></b-icon>
         </div>
         <b-spinner v-else small variant="success" label="Spinning"></b-spinner>
