@@ -51,6 +51,7 @@
 
 <script>
 import _axios from "../common/apiClient";
+import msgBoxModal from "@/common/modal";
 
 export default {
   name: "Signup",
@@ -76,12 +77,12 @@ export default {
       _axios
         .post("auth/register", this.form)
         .then((response) => {
-            alert(response.data.message);
             this.busy = false;
+            msgBoxModal("Done!", response.data.message, "success");
             this.$router.push("/");
         }).catch((error) => {
           this.busy = false;
-          alert(error.response.data.message);
+          msgBoxModal("Error", error.response.data.message, "danger");
         });
     },
     goToLogIn() {

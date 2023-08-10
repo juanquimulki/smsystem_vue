@@ -41,6 +41,7 @@
 
 <script>
 import _axios from "../common/apiClient";
+import msgBoxModal from "@/common/modal";
 
 export default {
   name: "Login",
@@ -74,7 +75,7 @@ export default {
             this.$router.push("dashboard");
         }).catch((error) => {
           this.busy = false;
-          alert(error.response.data.message);
+          msgBoxModal("Error", error.response.data.message, "danger");
         });
     },
     goToSignUp() {
