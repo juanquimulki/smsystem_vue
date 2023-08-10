@@ -70,20 +70,24 @@ export default {
   methods: {
     onSubmit(evt) {
       evt.preventDefault();
-      this.busy = true;
       this.signup();
     },
     signup() {
-      _axios
-        .post("auth/register", this.form)
-        .then((response) => {
+      if (this.form.password === this.form.repassword) {
+        this.busy = true;
+        _axios
+          .post("auth/register", this.form)
+          .then((response) => {
+              this.busy = false;
+              msgBoxModal("Done!", response.data.message, "success");
+              this.$router.push("/");
+          }).catch((error) => {
             this.busy = false;
-            msgBoxModal("Done!", response.data.message, "success");
-            this.$router.push("/");
-        }).catch((error) => {
-          this.busy = false;
-          msgBoxModal("Error", error.response.data.message, "danger");
-        });
+            msgBoxModal("Error", error.response.data.message, "danger");
+          });
+      } else {
+        msgBoxModal("Error", "Password and its confirmation are different", "danger");
+      }
     },
     goToLogIn() {
       this.$router.push("/");
