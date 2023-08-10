@@ -31,6 +31,8 @@
 
 <script>
 import _axios from "../common/apiClient";
+import msgBoxConfirm from "@/common/confirm";
+import msgBoxModal from "@/common/modal";
 
 export default {
   name: "MySuscriptions",
@@ -67,38 +69,41 @@ export default {
           this.busy = false;
         }).catch((error) => {
           this.busy = false;
-          alert(error.response.data.message);
+          msgBoxModal("Error", error.response.data.message, "danger");
         });
     },
-    unsubscribe(suscription_id) {
-      this.isLoading = true;
+    async unsubscribe(suscription_id) {
+      let option = await msgBoxConfirm("Suscription","Do you confirm your unsubscription?");
+      if (option) {
+        this.isLoading = true;
 
-      _axios
-      .post(`suscriptions/${suscription_id}/unsubscribe`, this.payload, this.config)
-      .then((response) => {
-        this.isLoading = false;
-        alert(response.data.message);
+        _axios
+          .post(`suscriptions/${suscription_id}/unsubscribe`, this.payload, this.config)
+          .then((response) => {
+            this.isLoading = false;
+            msgBoxModal("Done!", response.data.message, "success");
 
-        this.showRecords();
-      }).catch((error) => {
-        this.isLoading = false;
-        alert(error.response.data.message);
-      });
+            this.showRecords();
+          }).catch((error) => {
+            this.isLoading = false;
+            msgBoxModal("Error", error.response.data.message, "danger");
+          });
+      }
     },
     changeStatus(suscription_id, status) {
       this.isLoading = true;
 
       _axios
-      .post(`suscriptions/${suscription_id}/status/${status}`, this.payload, this.config)
-      .then((response) => {
-        this.isLoading = false;
-        alert(response.data.message);
+        .post(`suscriptions/${suscription_id}/status/${status}`, this.payload, this.config)
+        .then((response) => {
+          this.isLoading = false;
+          msgBoxModal("Done!", response.data.message, "danger");
 
-        this.showRecords();
-      }).catch((error) => {
-        this.isLoading = false;
-        alert(error.response.data.message);
-      });
+          this.showRecords();
+        }).catch((error) => {
+          this.isLoading = false;
+          msgBoxModal("Error", error.response.data.message, "danger");
+        });
     },
   },
   mounted() {

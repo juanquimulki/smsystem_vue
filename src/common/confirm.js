@@ -1,18 +1,18 @@
 import { BToast } from "bootstrap-vue";
 
-export default function msgBoxConfirm(titulo, cuerpo) {
+export default function msgBoxConfirm(title, body) {
   return new Promise(function (resolve) {
     let bootStrapToaster = new BToast();
     bootStrapToaster.$bvModal
-      .msgBoxConfirm(cuerpo, {
-        title: titulo,
+      .msgBoxConfirm(body, {
+        title: title,
         size: "md",
         buttonSize: "md",
-        okVariant: "danger",
-        okTitle: "SÍ",
+        okVariant: "success",
+        okTitle: "YES",
         cancelTitle: "NO",
         footerClass: "p-2",
-        hideHeaderClose: false,
+        hideHeaderClose: true,
         centered: true,
       })
       .then((value) => {

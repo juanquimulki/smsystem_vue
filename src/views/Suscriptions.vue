@@ -23,6 +23,8 @@
 
 <script>
 import _axios from "../common/apiClient";
+import msgBoxConfirm from "@/common/confirm";
+import msgBoxModal from "@/common/modal";
 
 export default {
   name: "Suscriptions",
@@ -42,18 +44,21 @@ export default {
     };
   },
   methods: {
-    subscribe(suscription_id) {
-      this.isSubscribing = true;
+    async subscribe(suscription_id) {
+      let option = await msgBoxConfirm("Suscription","Do you confirm your subscription?");
+      if (option) {
+        this.isSubscribing = true;
 
-      _axios
-      .post(`suscriptions/${suscription_id}/subscribe`, this.payload, this.config)
-      .then((response) => {
-        this.isSubscribing = false;
-        alert(response.data.message);
-      }).catch((error) => {
-        this.isSubscribing = false;
-        alert(error.response.data.message);
-      });
+        _axios
+          .post(`suscriptions/${suscription_id}/subscribe`, this.payload, this.config)
+          .then((response) => {
+            this.isSubscribing = false;
+            msgBoxModal("Done!", response.data.message, "success");
+          }).catch((error) => {
+            this.isSubscribing = false;
+            msgBoxModal("Error", error.response.data.message, "danger");
+          });
+      }
     },
   },
   mounted() {
@@ -69,7 +74,7 @@ export default {
         this.busy = false;
       }).catch((error) => {
         this.busy = false;
-        alert(error.response.data.message);
+        msgBoxModal("Error", error.response.data.message, "danger");
       });
   },
 };
